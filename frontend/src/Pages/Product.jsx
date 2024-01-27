@@ -13,6 +13,7 @@ const Product = () => {
 		<div>
 			<Breadcrumbs product={product} />
 			<ProductDisplay product={product} />
+			<DescriptionBox />
 		</div>
 	);
 };

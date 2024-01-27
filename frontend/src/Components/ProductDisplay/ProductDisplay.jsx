@@ -36,10 +36,9 @@ const ProductDisplay = (props) => {
 					</div>
 				</div>
 				<div className="productdisplay-right-description">
-					Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptate ut
-					dolore nisi distinctio facilis repudiandae ea, consectetur deserunt!
-					Nobis aliquam quidem nihil blanditiis placeat nostrum commodi ad
-					fugit, voluptatibus fuga!
+					A light-weight usually knitted, pullover shirt, close-fitting and with
+					a round neckline and short sleeves, worn as an undershirt or outer
+					garments.
 				</div>
 				<div className="productdisplay-right-size">
 					<h1>Select Size</h1>
