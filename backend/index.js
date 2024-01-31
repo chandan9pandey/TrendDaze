@@ -7,6 +7,8 @@ const path = require("path");
 const cors = require("cors");
 const dotenv = require("dotenv");
 
+const Product = require("./models/product");
+
 app.use(express.json());
 app.use(cors());
 dotenv.config();
