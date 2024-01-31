@@ -75,6 +75,17 @@ app.post("/addproduct", async (req, res) => {
 	});
 });
 
+// to delete product
+
+app.post("/removeproduct", async (req, res) => {
+	await Product.findOneAndDelete({ id: req.body.id });
+	console.log("Removed");
+	res.json({
+		success: true,
+		name: req.body.name,
+	});
+});
+
 app.listen(process.env.PORT, (error) => {
 	{
 		if (!error) {
