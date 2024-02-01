@@ -6,6 +6,7 @@ const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const bcrypt = require("bcrypt");
 
 const Product = require("./models/product");
 const User = require("./models/user");
@@ -93,6 +94,58 @@ app.get("/allproducts", async (req, res) => {
 	let products = await Product.find({});
 	console.log("All products fetched");
 	res.send(products);
+});
+
+// to register a new user
+
+app.post("/register", async (req, res) => {
+	let cart = {};
+	for (let i = 0; i < 300; i++) {
+		cart[i] = 0;
+	}
+	const { username, email, password } = req.body;
+	if (await User.findOne({ email: email })) {
+		return res.status(400).json({
+			success: false,
+			error: "User found with same email address already registered",
+		});
+	} else if (!username || !password || !email) {
+		res.json({ error: "Empty body received" });
+	} else {
+		bcrypt.hash(password, 10).then(async (hash) => {
+			await User.create({
+				name: username,
+				email: email,
+				password: hash,
+				cartData: cart,
+			})
+				.then((user) => {
+					const maxAge = 3 * 60 * 60;
+					const token = jwt.sign(
+						{ id: user._id, username },
+						process.env.JWT_SECRET_KEY,
+						{
+							expiresIn: maxAge, // 3hrs in sec
+						}
+					);
+					res.cookie("jwt", token, {
+						httpOnly: true,
+						maxAge: maxAge * 1000, // 3hrs in ms
+					});
+					res.status(201).json({
+						message: "User successfully created",
+						user: user._id,
+						token,
+					});
+				})
+				.catch((error) =>
+					res.status(400).json({
+						message: "User not successful created",
+						error: error.message,
+					})
+				);
+		});
+	}
 });
 
 app.listen(process.env.PORT, (error) => {
