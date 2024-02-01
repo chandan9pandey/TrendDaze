@@ -148,6 +148,55 @@ app.post("/register", async (req, res) => {
 	}
 });
 
+// for user sign-in
+
+app.post("/login", async (req, res) => {
+	const { email, password } = req.body;
+	if (!email || !password) {
+		return res.status(400).json({
+			message: "Email or Password not present",
+		});
+	}
+	try {
+		const user = await User.findOne({ email });
+		if (!user) {
+			res.status(400).json({
+				message: "Login not successful",
+				error: "User not found",
+			});
+		} else {
+			bcrypt.compare(password, user.password).then(function (result) {
+				if (result) {
+					const maxAge = 3 * 60 * 60;
+					const token = jwt.sign(
+						{ id: user._id, email },
+						process.env.JWT_SECRET_KEY,
+						{
+							expiresIn: maxAge, // 3hrs in sec
+						}
+					);
+					res.cookie("jwt", token, {
+						httpOnly: true,
+						maxAge: maxAge * 1000, // 3hrs in ms
+					});
+					res.status(201).json({
+						message: "User successfully Logged in",
+						user: user._id,
+						token,
+					});
+				} else {
+					res.status(400).json({ message: "Login not successful" });
+				}
+			});
+		}
+	} catch (error) {
+		res.status(400).json({
+			message: "An error occurred",
+			error: error.message,
+		});
+	}
+});
+
 app.listen(process.env.PORT, (error) => {
 	{
 		if (!error) {
