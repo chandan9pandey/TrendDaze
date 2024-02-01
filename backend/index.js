@@ -86,6 +86,14 @@ app.post("/removeproduct", async (req, res) => {
 	});
 });
 
+// to get all products
+
+app.get("/allproducts", async (req, res) => {
+	let products = await Product.find({});
+	console.log("All products fetched");
+	res.send(products);
+});
+
 app.listen(process.env.PORT, (error) => {
 	{
 		if (!error) {
