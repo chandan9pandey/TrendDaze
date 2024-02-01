@@ -8,6 +8,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 
 const Product = require("./models/product");
+const User = require("./models/user");
 
 app.use(express.json());
 app.use(cors());
