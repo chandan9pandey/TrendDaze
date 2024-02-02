@@ -133,6 +133,7 @@ app.post("/register", async (req, res) => {
 						maxAge: maxAge * 1000, // 3hrs in ms
 					});
 					res.status(201).json({
+						success: true,
 						message: "User successfully created",
 						user: user._id,
 						token,
@@ -140,6 +141,7 @@ app.post("/register", async (req, res) => {
 				})
 				.catch((error) =>
 					res.status(400).json({
+						success: false,
 						message: "User not successful created",
 						error: error.message,
 					})
@@ -154,6 +156,7 @@ app.post("/login", async (req, res) => {
 	const { email, password } = req.body;
 	if (!email || !password) {
 		return res.status(400).json({
+			success: false,
 			message: "Email or Password not present",
 		});
 	}
@@ -161,6 +164,7 @@ app.post("/login", async (req, res) => {
 		const user = await User.findOne({ email });
 		if (!user) {
 			res.status(400).json({
+				success: false,
 				message: "Login not successful",
 				error: "User not found",
 			});
@@ -180,17 +184,21 @@ app.post("/login", async (req, res) => {
 						maxAge: maxAge * 1000, // 3hrs in ms
 					});
 					res.status(201).json({
+						success: true,
 						message: "User successfully Logged in",
 						user: user._id,
 						token,
 					});
 				} else {
-					res.status(400).json({ message: "Login not successful" });
+					res
+						.status(400)
+						.json({ success: false, message: "Login not successful" });
 				}
 			});
 		}
 	} catch (error) {
 		res.status(400).json({
+			success: false,
 			message: "An error occurred",
 			error: error.message,
 		});
