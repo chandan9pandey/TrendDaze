@@ -157,7 +157,7 @@ app.post("/login", async (req, res) => {
 	if (!email || !password) {
 		return res.status(400).json({
 			success: false,
-			message: "Email or Password not present",
+			error: "Please fill in all the required fields",
 		});
 	}
 	try {
@@ -200,7 +200,7 @@ app.post("/login", async (req, res) => {
 		res.status(400).json({
 			success: false,
 			message: "An error occurred",
-			error: error.message,
+			error,
 		});
 	}
 });

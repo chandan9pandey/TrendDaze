@@ -53,7 +53,37 @@ const LoginSignup = () => {
 
 	//to handel Log In submissions
 
-	const handleLogin = async () => {};
+	const handleLogin = async (e) => {
+		e.preventDefault();
+		const data = {
+			email: formData?.email,
+			password: formData?.password,
+		};
+		const requestOptions = {
+			method: "POST",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(data),
+		};
+		try {
+			const response = await fetch(
+				`${baseUrl.concat("login")}`,
+				requestOptions
+			);
+			const res = await response.json();
+			console.log(res);
+			if (res.success) {
+				localStorage.setItem("auth-token", res.token);
+				window.location.replace("/");
+			} else {
+				alert(res.error);
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	//to handle Input in fields
 
