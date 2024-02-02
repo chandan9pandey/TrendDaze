@@ -192,7 +192,10 @@ app.post("/login", async (req, res) => {
 				} else {
 					res
 						.status(400)
-						.json({ success: false, message: "Login not successful" });
+						.json({
+							success: false,
+							error: "The username or password you entered is incorrect.",
+						});
 				}
 			});
 		}

@@ -73,7 +73,7 @@ const LoginSignup = () => {
 				requestOptions
 			);
 			const res = await response.json();
-			console.log(res);
+			// console.log(res);
 			if (res.success) {
 				localStorage.setItem("auth-token", res.token);
 				window.location.replace("/");
