@@ -27,11 +27,13 @@ app.get("/", (req, res) => {
 // Image storage engine
 
 const storage = multer.diskStorage({
-	destination: "./upload/images",
+	destination: "./upload/images", // Destination to store image
 	filename: (req, file, cb) => {
 		return cb(
 			null,
 			`${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`
+			// file.fieldname is name of the field (image)
+			// path.extname get the uploaded file extension
 		);
 	},
 });
@@ -40,11 +42,11 @@ const upload = multer({ storage: storage });
 
 //creating upload endpoint for images
 
-app.use("./images", express.static("upload/images"));
+app.use("/images", express.static("upload/images"));
 app.post("/upload", upload.single("product"), (req, res) => {
 	res.json({
 		success: true,
-		image_url: `http://localhost:${process.env.PORT}/images/${req.file.filename}`,
+		image_url: `${process.env.PORT}/images/${req.file.filename}`,
 	});
 });
 
@@ -190,12 +192,10 @@ app.post("/login", async (req, res) => {
 						token,
 					});
 				} else {
-					res
-						.status(400)
-						.json({
-							success: false,
-							error: "The username or password you entered is incorrect.",
-						});
+					res.status(400).json({
+						success: false,
+						error: "The username or password you entered is incorrect.",
+					});
 				}
 			});
 		}
