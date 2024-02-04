@@ -15,7 +15,7 @@ const ShopContextProvider = (props) => {
 	const [cartItems, setCartItems] = useState(getDefaultCart());
 
 	const baseUrl = import.meta.env.VITE_BASE_URL; // Server Url
-	console.log(baseUrl);
+	// console.log(baseUrl);
 	useEffect(() => {
 		fetch(`${baseUrl.concat("allproducts")}`)
 			.then((response) => response.json())

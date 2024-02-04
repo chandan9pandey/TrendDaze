@@ -98,6 +98,13 @@ app.get("/allproducts", async (req, res) => {
 	res.send(products);
 });
 
+app.get("/newcollections", async (req, res) => {
+	let products = await Product.find({});
+	let newcollections = await products.slice(1).slice(-8);
+	console.log(newcollections);
+	res.send(newcollections);
+});
+
 // to register a new user
 
 app.post("/register", async (req, res) => {

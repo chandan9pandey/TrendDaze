@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./NewCollections.css";
 import Item from "../Item/Item";
-import new_collections from "../Assets/new_collections";
 const NewCollections = () => {
+	const [new_collections, setNew_collections] = useState([]);
+
+	const baseUrl = import.meta.env.VITE_BASE_URL; // Server Url
+	// console.log(baseUrl);
+	useEffect(() => {
+		fetch(`${baseUrl.concat("newcollections")}`)
+			.then((response) => response.json())
+			.then((data) => setNew_collections(data));
+	}, []);
+
 	return (
 		<div className="new-collections">
 			<h1>NEW COLLECTIONS</h1>
