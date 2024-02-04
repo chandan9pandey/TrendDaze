@@ -15,7 +15,7 @@ const Navbar = () => {
 	};
 	return (
 		<div className="navbar">
-			<div className="nav-logo">
+			<div className="nav-logo" onClick={() => window.location.replace("/")}>
 				<img src={logo} alt="logo" />
 				<p>TrendDaze</p>
 			</div>
