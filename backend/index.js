@@ -103,7 +103,7 @@ app.get("/allproducts", async (req, res) => {
 app.get("/newcollections", async (req, res) => {
 	let products = await Product.find({});
 	let newcollections = await products.slice(1).slice(-8);
-	console.log(newcollections);
+	// console.log(newcollections);
 	res.send(newcollections);
 });
 
@@ -112,8 +112,41 @@ app.get("/newcollections", async (req, res) => {
 app.get("/popularinwomen", async (req, res) => {
 	let products = await Product.find({ category: "women" });
 	let popular_in_women = await products.slice(1).slice(-8);
-	console.log(popular_in_women);
+	// console.log(popular_in_women);
 	res.send(popular_in_women);
+});
+
+// creating middleware to fetch user
+
+const fetchUser = async (req, res, next) => {
+	try {
+		const token = req.header("auth-token");
+		if (!token) return res.status(403).send({ error: "Access Denied" });
+		const data = jwt.verify(token, process.env.JWT_SECRET_KEY);
+		req.user = data;
+		next();
+	} catch (error) {
+		res.status(400).send({ error: "Invalid Token" });
+	}
+};
+
+// for adding products in cart
+
+app.post("/addtocart", fetchUser, async (req, res) => {
+	console.log("Added", req.body.itemId);
+	let userData = await User.findOne({ _id: req.user.id });
+	userData.cartData[req.body.itemId] += 1;
+	await User.findOneAndUpdate(
+		{ _id: req.user.id },
+		{ cartData: userData.cartData }
+	);
+	res.send("Added Successfully");
+});
+
+// for removing products from cart
+
+app.post("/removefromcart", fetchUser, async (req, res) => {
+	console.log("Removed", req.body.itemId);
 });
 
 // to register a new user

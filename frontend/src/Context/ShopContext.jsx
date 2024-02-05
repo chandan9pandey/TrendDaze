@@ -24,11 +24,23 @@ const ShopContextProvider = (props) => {
 
 	const addToCart = (itemId) => {
 		setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
-		console.log(cartItems);
+		if (localStorage.getItem("auth-token")) {
+			fetch(`${baseUrl.concat("addtocart")}`, {
+				method: "POST",
+				headers: {
+					Accept: "application/json",
+					"auth-token": `${localStorage.getItem("auth-token")}`,
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					itemId: itemId,
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => console.log(data));
+		}
 	};
-	const removeFromCart = (itemId) => {
-		setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
-	};
+
 	const getTotalCartAmount = () => {
 		let totalAmount = 0;
 		for (const item in cartItems) {
