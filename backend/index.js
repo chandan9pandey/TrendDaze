@@ -98,11 +98,22 @@ app.get("/allproducts", async (req, res) => {
 	res.send(products);
 });
 
+// to get new collections data
+
 app.get("/newcollections", async (req, res) => {
 	let products = await Product.find({});
 	let newcollections = await products.slice(1).slice(-8);
 	console.log(newcollections);
 	res.send(newcollections);
+});
+
+// to get popular products
+
+app.get("/popularinwomen", async (req, res) => {
+	let products = await Product.find({ category: "women" });
+	let popular_in_women = await products.slice(1).slice(-8);
+	console.log(popular_in_women);
+	res.send(popular_in_women);
 });
 
 // to register a new user

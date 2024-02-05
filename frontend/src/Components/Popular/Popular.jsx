@@ -1,14 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./Popular.css";
-import data_product from "../Assets/data";
 import Item from "../Item/Item";
 const Popular = () => {
+	const [popularInWomen, setPopularInWomen] = useState([]);
+
+	const baseUrl = import.meta.env.VITE_BASE_URL; // Server Url
+	// console.log(baseUrl);
+	useEffect(() => {
+		fetch(`${baseUrl.concat("popularinwomen")}`)
+			.then((response) => response.json())
+			.then((data) => setPopularInWomen(data));
+	}, []);
 	return (
 		<div className="popular">
 			<h1>POPULAR IN WOMEN</h1>
 			<hr />
 			<div className="popular-item">
-				{data_product.map((item, i) => {
+				{popularInWomen.map((item, i) => {
 					return (
 						<Item
 							key={i}
