@@ -158,6 +158,14 @@ app.post("/removefromcart", fetchUser, async (req, res) => {
 	res.send("Removed Successfully");
 });
 
+// to fetch cart data
+
+app.post("/getcart", fetchUser, async (req, res) => {
+	console.log("Get Cart");
+	let userData = await User.findOne({ _id: req.user.id });
+	res.json(userData.cartData);
+});
+
 // to register a new user
 
 app.post("/register", async (req, res) => {
