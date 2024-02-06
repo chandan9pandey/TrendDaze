@@ -11,6 +11,7 @@ const getDefaultCart = () => {
 };
 
 const ShopContextProvider = (props) => {
+	const [loading, setLoading] = useState(true);
 	const [all_product, setAll_product] = useState([]);
 	const [cartItems, setCartItems] = useState(getDefaultCart());
 
@@ -20,6 +21,7 @@ const ShopContextProvider = (props) => {
 		fetch(`${baseUrl.concat("allproducts")}`)
 			.then((response) => response.json())
 			.then((data) => setAll_product(data));
+		setLoading(false);
 
 		if (localStorage.getItem("auth-token")) {
 			fetch(`${baseUrl.concat("getcart")}`, {
@@ -96,6 +98,7 @@ const ShopContextProvider = (props) => {
 		return totalItem;
 	};
 	const contextValue = {
+		loading,
 		all_product,
 		cartItems,
 		addToCart,

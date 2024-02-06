@@ -17,7 +17,7 @@ const RelatedProducts = (props) => {
 			)
 			.then((res) => res.sort(() => 0.5 - Math.random()).slice(0, 4))
 			.then((data) => setRelatedProducts(data));
-	}, []);
+	}, [product]);
 	return (
 		<div className="relatedproducts">
 			<h1>Related Products</h1>
