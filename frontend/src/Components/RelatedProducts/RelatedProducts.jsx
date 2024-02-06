@@ -1,14 +1,29 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./RelatedProducts.css";
-import data_product from "../Assets/data";
 import Item from "../Item/Item";
-const RelatedProducts = () => {
+const RelatedProducts = (props) => {
+	const { product } = props;
+	const [relatedProducts, setRelatedProducts] = useState([]);
+
+	const baseUrl = import.meta.env.VITE_BASE_URL; // Server Url
+	// console.log(baseUrl);
+	useEffect(() => {
+		fetch(`${baseUrl.concat("allproducts")}`)
+			.then((response) => response.json())
+			.then((result) =>
+				result.filter((item) => {
+					return item.category === product.category;
+				})
+			)
+			.then((res) => res.sort(() => 0.5 - Math.random()).slice(0, 4))
+			.then((data) => setRelatedProducts(data));
+	}, []);
 	return (
 		<div className="relatedproducts">
 			<h1>Related Products</h1>
 			<hr />
 			<div className="relatedproducts-item">
-				{data_product.map((item, i) => {
+				{relatedProducts.map((item, i) => {
 					return (
 						<Item
 							key={i}

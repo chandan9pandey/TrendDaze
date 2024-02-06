@@ -15,7 +15,7 @@ const Product = () => {
 			<Breadcrumbs product={product} />
 			<ProductDisplay product={product} />
 			<DescriptionBox />
-			<RelatedProducts />
+			<RelatedProducts product={product} />
 		</div>
 	);
 };

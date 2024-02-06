@@ -84,7 +84,7 @@ const ShopContextProvider = (props) => {
 				totalAmount += itemInfo.new_price * cartItems[item];
 			}
 		}
-		return totalAmount;
+		return totalAmount.toFixed(2);
 	};
 	const getTotalCartItems = () => {
 		let totalItem = 0;
