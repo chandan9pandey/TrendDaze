@@ -14,16 +14,27 @@ const ShopContextProvider = (props) => {
 	const [loading, setLoading] = useState(true);
 	const [all_product, setAll_product] = useState([]);
 	const [cartItems, setCartItems] = useState(getDefaultCart());
+	const [loggedIn, setLoggedIn] = useState(false);
 
 	const baseUrl = import.meta.env.VITE_BASE_URL; // Server Url
 	// console.log(baseUrl);
 	useEffect(() => {
+		const loadingTimeout = setTimeout(() => {
+			setLoading(true);
+		}, 5000);
 		fetch(`${baseUrl.concat("allproducts")}`)
 			.then((response) => response.json())
-			.then((data) => setAll_product(data));
-		setLoading(false);
+			.then((data) => setAll_product(data))
+			.catch((err) => {
+				console.log(err);
+			})
+			.finally(() => {
+				clearTimeout(loadingTimeout);
+				setLoading(false);
+			});
 
 		if (localStorage.getItem("auth-token")) {
+			setLoggedIn(true);
 			fetch(`${baseUrl.concat("getcart")}`, {
 				method: "POST",
 				headers: {
@@ -105,6 +116,7 @@ const ShopContextProvider = (props) => {
 		removeFromCart,
 		getTotalCartAmount,
 		getTotalCartItems,
+		loggedIn,
 	};
 
 	return (
