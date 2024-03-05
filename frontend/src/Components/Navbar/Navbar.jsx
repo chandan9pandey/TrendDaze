@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { ShopContext } from "../../Context/ShopContext";
 const Navbar = () => {
 	const [menu, setMenu] = useState("shop");
-	const { getTotalCartItems } = useContext(ShopContext);
+	const { loggedIn, getTotalCartItems } = useContext(ShopContext);
 	const menuRef = useRef();
 	const dropdown_toggle = (e) => {
 		menuRef.current.classList.toggle("nav-menu-visible");
@@ -76,9 +76,16 @@ const Navbar = () => {
 					</Link>
 				)}
 
-				<Link to="/cart">
-					<img src={cart_icon} alt="" />
-				</Link>
+				{loggedIn === true ? (
+					<Link to="/cart">
+						<img src={cart_icon} alt="" />
+					</Link>
+				) : (
+					<Link to="/login">
+						<img src={cart_icon} alt="" />
+					</Link>
+				)}
+
 				<div className="nav-cart-count">{getTotalCartItems()}</div>
 			</div>
 		</div>
